@@ -1,0 +1,26 @@
+{
+  "name": "yt-mp3",
+  "version": "1.0.0",
+  "description": "Capture mp3 from videos and add metadata",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArnaudBuchholz/yt-mp3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArnaudBuchholz/yt-mp3/issues"
+  },
+  "homepage": "https://github.com/ArnaudBuchholz/yt-mp3#readme",
+  "dependencies": {
+    "csv-parser": "^3.2.0",
+    "node-id3": "^0.2.9",
+    "progress": "^2.0.3",
+    "yargs": "^18.0.0"
+  }
+}
