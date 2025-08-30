@@ -141,3 +141,6 @@ vite.config.ts.timestamp-*
 *.mp3
 *.mp4
 *.csv
+*.exe
+*.part*
+*.ytdl
