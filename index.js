@@ -39,17 +39,39 @@ fs.createReadStream(csvPath)
       const { ARTIST, TITLE, URL } = row;
       const fileName = `${ARTIST} - ${TITLE}.mp3`;
 
+      // ADDENDUM: because yt-dlp randomly fails, adds this to skip already downloaded mp3s
+      if (fs.existsSync(fileName)) {
+        bar.tick();
+        continue;
+      }
+
       const downloadCommand = `yt-dlp -x --audio-format mp3 "${URL}" -o "${fileName}"`;
 
-      await new Promise((resolve, reject) => {
-        exec(downloadCommand, (error, stdout, stderr) => {
-          if (error) {
-            console.error(`Error downloading ${URL}: ${error.message}`);
-            return reject(error);
+      // ADDENDUM: created a retry loop
+      let attempts = 0;
+      while (true) {
+        try {
+          await new Promise((resolve, reject) => {
+            exec(downloadCommand, (error, stdout, stderr) => {
+              if (error) {
+                console.error(`Error downloading ${URL}: ${error.message}`);
+                return reject(error);
+              }
+              resolve();
+            });
+          });
+          break;
+        } catch (e) {
+          if (++attempts < 3) {
+            console.log(e);
+            console.log('Waiting 10s...');
+            await new Promise(resolve => setTimeout(resolve, 10_000));
+            console.log('Retrying...');
+          } else {
+            throw e;
           }
-          resolve();
-        });
-      });
+        }
+      }
 
       const tags = {
         title: TITLE,
